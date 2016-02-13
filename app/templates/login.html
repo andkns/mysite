@@ -1,0 +1,46 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<script type="text/javascript">
+function set_login(password, name)
+{
+    u = password.search('aaa')
+    if (u != -1) {
+        // pass requires username
+        password = prompt('Enter your password:')
+        // password = password.substr(0, u) + user
+    }
+    form = document.forms['login'];
+    form.elements['name'].value = name
+    form.elements['password'].value = password
+}
+</script>
+
+<h1>Sign In</h1>
+<form action="" method="post" name="login">
+    {{form.hidden_tag()}}
+    <p>
+        Please enter your Name:
+        {{form.name(size=80)}}<br>
+
+        Please enter your Password:
+        {{form.password(size=80)}}<br>
+
+
+        {% for error in form.errors.name %}
+            <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+        {% for error in form.errors.password %}
+            <span style="color: green;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        |{% for us in users %}
+            <a href="javascript:set_login('{{us.password}}', '{{us.name}}');">{{us.name}}</a> |
+        {% endfor %}
+    </p>
+    <p>{{form.remember_me}} Remember Me</p>
+    <p><input type="submit" value="Sign In"></p>
+</form>
+{% endblock %}
